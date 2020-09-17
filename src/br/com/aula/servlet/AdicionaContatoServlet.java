@@ -38,18 +38,16 @@ public class AdicionaContatoServlet extends HttpServlet {
 		String nome = request.getParameter("nome");
 		String endereco = request.getParameter("endereco");
 		String email = request.getParameter("email");
-		String dataEmTexto = request.getParameter("dataNascimento");
-		Calendar dataNascimento = null;
+		String dataEmTexto = request.getParameter("nascimento");
+		Calendar nascimento = null;
 
 		// fazendo a conversão da data		
 		try {
-			Date date =
-					new SimpleDateFormat("dd/MM/yyyy")
-					.parse(dataEmTexto);
-			dataNascimento = Calendar.getInstance();
-			dataNascimento.setTime(date);
+			Date date = new SimpleDateFormat("dd/MM/yyyy").parse(dataEmTexto);
+			nascimento = Calendar.getInstance();
+			nascimento.setTime(date);
 		} catch (Exception e) {
-			out.println("Erro de conversão da data");
+			out.println("Erro de conversão da data: " + e.getMessage());
 			return; //para a execução do método
 		}
 		
@@ -58,7 +56,7 @@ public class AdicionaContatoServlet extends HttpServlet {
 		contato.setNome(nome);
 		contato.setEndereco(endereco);
 		contato.setEmail(email);
-		contato.setDataNascimento(dataNascimento);
+		contato.setNascimento(nascimento);
 		
 		// salva o contato
 		try {
@@ -66,9 +64,8 @@ public class AdicionaContatoServlet extends HttpServlet {
 			ContatoDao dao = new ContatoDao();
 			dao.adiciona(contato);
 		
-			RequestDispatcher rd = request
-					.getRequestDispatcher("/contato-adicionado.jsp");
-					rd.forward(request,response);
+			RequestDispatcher rd = request.getRequestDispatcher("/NewContact	.jsp");
+			rd.forward(request,response);
 			
 		}catch (Exception e) {
 			throw new ServletException(e);
